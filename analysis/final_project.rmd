@@ -1,0 +1,279 @@
+---
+title: 'Final Project: Description Using Models'
+subtitle: 'UCB MIDS 203 Fall 2026 Section 6 Final Project Report'
+author: 'Vlad Lee, Sophia Liang, Mark Randall'
+output: 'pdf_document'  
+classoption: portait
+fontsize: 11pt
+---
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Import the libraries necessary for our project
+library(readxl)  
+library(patchwork) 
+library(tidyverse)
+library(sandwich) 
+library(lmtest)
+library(car) 
+library(plotly)
+library(knitr)
+library(dplyr)
+library(purrr)
+library(tibble)
+library(modelsummary)
+
+```
+
+# 1. Introduction
+<span style="color:red">
+TODO:   
+* This is copied directly from the proposal - if we hit our 4 page cap then we may need to come back to these first two paragraphs and condense them
+</span>
+
+Our research question is to describe at a country level how the Life Expectancy of residents is related to economic development, measured by GDP per capita. Our audience is individuals who are not socio-economic specialists, but would like to expand their worldview of how a wide range of society metrics can influence the typical individual’s income, and understand the broader patterns in global development and living standards. The larger context of the question lies in discussions of economic development, global inequality, and public health, where researchers and policymakers aim to understand why countries experience very different health outcomes and living standards. This topic has been widely studied, not least of which by Gapminder itself, which aims to help individuals rid themselves of common global misconceptions. Predicting life expectancy is also studied by Samuel Preston in 1975, who proposed a Preston curve, which demonstrates a concave relationship between life expectancy with GDP per capita. Additionally, Roffia et al. conducted a longitudinal study to determine life expectancy at birth based on certain socioeconomic and demographic factors. Nevertheless, our research brings together multiple dimensions of national development in one accessible country-level framework, providing a more holistic picture of how multiple kinds of determinants interact and influence life expectancy. 
+
+# 2. Datasource
+<span style="color:red">
+TODO:   
+* should we indicate that each variable was a separate file? And if so, should we write the R code to read the 10 files and combine them into a single data frame?  
+* note that there are two countries with a missing lex value - I just deleted them as outliers but we should mention this in the data wrangling - Lichtenstein and Holy See
+</span>
+
+We have sourced our data from <a href='www.gapminder.org'>www.gapminder.org</a>, a Swedish organization that curates reliable data on global trends, compiled from sources such as the World Bank. The data includes annual country level observations for 193 countries spanning multiple decades. For this project we construct a cross sectional dataset using data from 2022. The data is presented as one row per country (195 observations) and we will use country metrics as our features that are normalized (e.g. per person) to remove country size effects. 
+
+```{r, echo=FALSE, results=FALSE}
+
+df <- read_excel('../data/203_projectdata.xlsx', sheet = '2022')
+glimpse(df)
+
+colnames(df)
+```
+
+```{r, echo = FALSE, message = FALSE}
+# check missing GDP per capita
+sum(is.na(df$gdp_pcap))
+
+# drop missing rows
+
+df_clean <- df %>%
+  filter(!is.na(gdp_pcap))
+
+# check missing rows again
+sum(is.na(df_clean$gdp_pcap))
+sum(is.na(df_clean$lex))
+```
+
+
+## 2.1 Columns
+
+Each country is represented by a 3-letter country code and country long name. The outcome variable for our analysis is life expectancy (<b>lex</b>), which captures overall population health. Our primary explanatory variable is GDP per capita (<b>gdp_pcap</b>), which measures economic development. Though the online dataset includes hundreds of indicators, we have chosen a small subset to represent broad categories of health, inequality, population demographics (age), economy and infrastructure:  
+* average_daily_income  
+* broadband_subscribers_per_100_p   
+* cell_phones_per_100_people   
+* children_per_woman_total_fertil  
+* co2_pcap_cons  
+* gini  
+* median_age_years  
+* population_density_per_square_k  
+
+# 3. Primary Analysis
+
+<span style="color:red">
+TODO:   
+* add model assumptions  
+* Polish charts (labels, number formats, titles etc). Add chart numbers?  
+* review and expand/add a description on each chart  
+* do we need to describe why we usew heteroskedastic variance in the t-test? The scatter plot of the data shows a relatively consistent variance.    
+* Review and elaborate on t-test reuslts and effect size interpretation 
+</span>
+
+Our primary anlysis aims to describe the relationship between life expectancy at birth and GDP per capita across our country data in 2022. GDP per capita is a currency measurement and currency data (e.g. salary, earnings) is typically well suited to a logarithmic transformation. We plot the observed life expectancy data against the observed GDP per capita data:
+
+```{r, echo=FALSE, message=FALSE}
+
+#plot the observations 
+plot_raw <- df_clean %>%
+    ggplot(aes(x=gdp_pcap, y=lex)) + geom_point() +
+    labs (
+        title = 'Observed life expectancy at birth vs. gdp per capita in 2022',
+        x = 'GDP per capita',
+        y = 'life expectancy at birth'
+    )
+
+plot_log <- df_clean %>%
+    ggplot(aes(x=log(gdp_pcap), y=lex)) + geom_point() + 
+    geom_smooth(method=lm) + 
+    labs (
+        x = 'GDP per capita (logarithmic scale)',
+        y = 'life expectancy at birth'
+    )
+plot_raw|plot_log 
+
+```
+
+```{r, echo = FALSE, results = FALSE}
+cor(df_clean$lex, df_clean$gdp_pcap)
+cor(df_clean$lex, log(df_clean$gdp_pcap))
+```
+
+The correlation coefficient of life expectancy against the log of GPD per capita is 0.796, supporting the clear linear relationship indicated in the scatter plot.  
+
+We construct our primary regression model as:  
+$$\text{lex} = \alpha + \beta \cdot \log(\text{gdp\_pcap})$$
+
+Following the application of OLS, our model is determined as:
+$$\text{lex} = 26.501 + 4.796 \cdot \log(\text{gdp\_pcap})$$
+
+
+```{r, echo = FALSE, message = FALSE}
+#define the linera regression model 
+model_short <- lm(lex ~ log(gdp_pcap), data = df_clean)
+
+#plot the observed values against the fitted model values 
+df_fitted <- cbind(model_short$fitted.value, df_clean$lex)
+colnames(df_fitted) <- c('model_lex','sample_lex')
+df_fitted <- as.data.frame(df_fitted)
+plot1 <- df_fitted %>%
+    ggplot(aes(x=model_lex, y=sample_lex)) + 
+    geom_point() + 
+    labs (
+        title = 'Observed vs. Fitted',
+        x = 'Fitted values',
+        y = 'Observed values'
+    )
+
+#plot the residuals aginst the fitted model values 
+resid_df <- tibble::tibble(fitted = model_short$fitted, residual = model_short$residuals)
+plot2 <- resid_df |>
+  ggplot2::ggplot(ggplot2::aes(x = fitted, y = residual)) +
+  ggplot2::geom_point(alpha = 0.6) +
+  ggplot2::geom_smooth(se = FALSE, color = "red") +
+  ggplot2::geom_hline(yintercept = 0, linetype = "dashed", color = "gray30") +
+  ggplot2::labs(x = "Fitted values", y = "Residuals", title = "Residuals vs Fitted")
+
+plot1|plot2
+
+```
+
+We perform a t-test of the simple model coefficients using heteroskedastic variance:
+```{r, echo=FALSE}
+coeftest(model_short, vcovHC(model_short, type = "HC1"))
+```
+
+Our p-value (2.2 x 10^-16) is close to zero and much smaller than our target level of significance at 0.05. As a result, we can reject our NULL hypothesis and conclude that there is overwhelming evidence that there is a postive relationship between GDP per capita and life expectancy. 
+
+Our Level-Log model indicates that a 10% increase in GDP per capita is associated with an approximately 0.48 year increase in life expectancy at birth. We note that this is a descriptive anlaysis comparing this relationship between countries and does not necessarily imply that if one particular country were to increase GDP per capita by 10%, then that country would likely see an 0.48 year increase in life expectancy at birth.  
+
+# 4. Expanded Analysis
+<span style="color:red">
+TODO:   
+* polish charts - labels, review log transform for income and population density  
+* check that we have enough text explaining each chart  
+* not all of the variables have data for all 193 countries - we should mention this? switch warning back on for the r chunk to see which ones.    
+* co2 per capita and children per woman seem to have a non-linear shape - maybe a diffferent transformation here?  
+* average_daily_income completely outshines gdp_pcap - although I assume there must be some form of colinearity here? Should we try to prove this and then exclude average_daily_income?
+* Consider: convert one of our numerical variables into a categorical variable by grouping? e.g. high/meidum/low - to demonstrate a LM analysis with factors  
+* Consider: create a model with interaction effects?  
+</span>
+
+To better understand the relationship between life expectancy and broader measures of development, we extend
+our baseline model by incorporating additional variables capturing demographics, inequality, and population
+characteristics.
+Before constructing the expanded model, we note that several variables are strongly correlated with GDP per
+capita. In particular, average daily income is highly correlated with GDP per capita (correlation $\approx 0.96$), indicating
+that both variables capture similar aspects of economic development. Including both in the model would introduce
+multicollinearity and lead to unstable coefficient estimates. For this reason, we exclude average daily income and
+retain GDP per capita as our primary measure of economic development.
+
+
+## 4.1 Demographic Factors
+
+We first extend the model by adding demographic variables: fertility (children per woman) and median age. Both
+variables are statistically significant and have intuitive interpretations. Higher fertility is associated with lower life
+expectancy, while higher median age is associated with higher life expectancy.
+Including these variables improves model fit relative to the baseline, indicating that demographic structure explains
+additional variation in life expectancy. The coefficient on GDP per capita remains positive but decreases in
+magnitude, suggesting that part of the relationship between GDP and life expectancy is captured through
+demographic factors.
+
+\[
+\text{lex} = 46.33 + 2.42 \cdot \log(\text{GDP per capita}) - 1.27 \cdot \text{children per woman} + 0.20 \cdot \text{median age}
+\]
+
+```{r, echo = FALSE, message = FALSE}
+# Estimate model with demographic variables.
+model_2 <- lm(
+  lex ~ log(gdp_pcap) +
+    children_per_woman_total_fertil +
+    median_age_years,
+    data = df_clean
+)
+
+# Use robust standard errors.
+coeftest(model_2, vcov = vcovHC(model_2, type = "HC1"))
+anova(model_short, model_2)
+```
+
+## 4.2 Inequality and Population Characteristics
+
+We next incorporate measures of inequality and population characteristics by adding the Gini index, a measure of
+wealth inequality, and population density. We observe a negative and statistically significant coefficient for the Gini
+index variable, indicating that higher inequality is associated with lower life expectancy, holding other factors
+constant.
+Population density does not appear to contribute independently in this specification, as its coefficient is not statistically
+significant. However, the inclusion of these variables jointly improves model fit, as supported by a statistically
+significant F test comparing this specification to the previous model. This improvement is primarily driven by the Gini
+index, which provides meaningful additional explanatory power beyond GDP and demographic factors.
+
+\[
+\begin{aligned}
+\text{lex} =\;& 53.79 + 2.34 \cdot \log(\text{GDP per capita}) \\
+& - 1.44 \cdot \text{children per woman} + 0.13 \cdot \text{median age} \\
+& - 0.15 \cdot \text{Gini} - 0.391 \cdot \log(\text{population density})
+\end{aligned}
+\]
+
+```{r, echo = FALSE, message = FALSE, output=FALSE}
+model_3 <- lm(
+  lex ~ log(gdp_pcap) +
+    children_per_woman_total_fertil +
+    median_age_years +
+    gini +
+    log(population_density_per_square_k),
+    data = df_clean
+)
+
+coeftest(model_3, vcov = vcovHC(model_3, type = "HC1"))
+anova(model_2, model_3)
+```
+
+# Summary of Models
+
+```{r, echo = FALSE, message = FALSE}
+modelsummary(
+  list(
+    "Baseline" = model_short,
+    "Demographics" = model_2,
+    "Final Model" = model_3
+  ),
+  vcov = "HC1",
+  stars = TRUE,
+  title = "Regression Models of Life Expectancy",
+  statistic = "({std.error})",
+  gof_omit = "AIC|BIC|Log.Lik|RMSE|F",
+  coef_map = c(
+    "(Intercept)" = "Intercept",
+    "gdp_pcap" = "GDP per Capita",
+    "log(gdp_pcap)" = "Log GDP per Capita",
+    "children_per_woman_total_fertil" = "Children per Woman",
+    "log(population_density_per_square_k)" = "Log Population Density",
+    "median_age_years" = "Median Age",
+    "gini" = "Gini Index"
+  )
+)
+```
+
+
+
+
+# Appendix 
+

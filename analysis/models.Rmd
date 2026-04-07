@@ -35,19 +35,6 @@ sum(is.na(df_clean$lex))
 
 ```
 
-### Base model Life expectancy vs. GDP per capita
-```{r}
-model_base <- lm(lex ~ gdp_pcap, data = df_clean)
-summary(model_base)
-```
-
-```{r}
-# Use robust standard errors.
-robust_se_base <- sqrt(diag(vcovHC(model_base, type = "HC1")))
-
-coeftest(model_base, vcov = vcovHC(model_base, type = "HC1"))
-```
-
 ### Check for skewness in distribution of gdp per capita.
 ```{r}
 ggplot(df_clean, aes(x = gdp_pcap)) +
@@ -90,41 +77,44 @@ ggplot(df_clean, aes(x = gdp_pcap, y = average_daily_income)) +
   )
 ```
 
+### Correlation between life expectancy and log GDP is 0.796.
+```{r}
+cor(log(df_clean$gdp_pcap), df_clean$lex, use = "complete.obs")
+```
+
 
 ```{r}
-model_log <- lm(lex ~ log(gdp_pcap), data = df_clean)
-summary(model_log)
+model_base <- lm(lex ~ log(gdp_pcap), data = df_clean)
+summary(model_base)
 ```
 
 
 ```{r}
 # Use robust standard errors.
-robust_se_log <- sqrt(diag(vcovHC(model_log, type = "HC1")))
+robust_se_log <- sqrt(diag(vcovHC(model_base, type = "HC1")))
 
-coeftest(model_log, vcov = vcovHC(model_log, type = "HC1"))
+coeftest(model_base, vcov = vcovHC(model_base, type = "HC1"))
 ```
 
 ### Add demographic additional variables.
 ```{r}
-model_3 <- lm(
+model_2 <- lm(
   lex ~ log(gdp_pcap) +
     children_per_woman_total_fertil +
     median_age_years,
     data = df_clean
 )
 
-summary(model_3)
-anova(model_log, model_3)
+# Use robust standard errors.
+coeftest(model_2, vcov = vcovHC(model_2, type = "HC1"))
+
+anova(model_base, model_2)
 ```
 
-```{r}
-# Use robust standard errors.
-coeftest(model_3, vcov = vcovHC(model_3, type = "HC1"))
-```
 
 ### Add inequality additional variables.
 ```{r}
-model_4 <- lm(
+model_3 <- lm(
   lex ~ log(gdp_pcap) +
     children_per_woman_total_fertil +
     median_age_years +
@@ -133,18 +123,15 @@ model_4 <- lm(
     data = df_clean
 )
 
-summary(model_4)
-anova(model_3, model_4)
-```
-
-```{r}
 # Use robust standard errors.
-coeftest(model_4, vcov = vcovHC(model_4, type = "HC1"))
+coeftest(model_3, vcov = vcovHC(model_3, type = "HC1"))
+
+anova(model_2, model_3)
 ```
 
 
 ```{r}
-model_5 <- lm(
+model_4 <- lm(
   lex ~ log(gdp_pcap) +
     children_per_woman_total_fertil +
     median_age_years +
@@ -153,38 +140,18 @@ model_5 <- lm(
     data = df_clean
 )
 
-summary(model_5)
+coeftest(model_4, vcov = vcovHC(model_4, type = "HC1"))
+
+anova(model_2, model_4)
 ```
 
-```{r}
-# Use robust standard errors.
-coeftest(model_5, vcov = vcovHC(model_5, type = "HC1"))
-```
-
-### Add Tech/Infrastructure additional variables.
-```{r}
-model_6 <- lm(
-  lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
-    median_age_years +
-    gini +
-    log(population_density_per_square_k) +
-    cell_phones_per_100_people +
-    broadband_subscribers_per_100_p +
-    co2_pcap_cons,
-    data = df_clean
-)
-
-summary(model_6)
-```
 
 ```{r}
 modelsummary(
   list(
     "Baseline" = model_base,
-    "Log GDP" = model_log,
-    "Demographics" = model_3,
-    "Final Model" = model_5
+    "Demographics" = model_2,
+    "Final Model" = model_4
   ),
   vcov = "HC1",
   stars = TRUE,
@@ -192,6 +159,7 @@ modelsummary(
   statistic = "({std.error})",
   gof_omit = "AIC|BIC|Log.Lik|RMSE|F",
   coef_map = c(
+    "(Intercept)" = "Intercept",
     "gdp_pcap" = "GDP per Capita",
     "log(gdp_pcap)" = "Log GDP per Capita",
     "children_per_woman_total_fertil" = "Children per Woman",
