@@ -127,32 +127,10 @@ $$\text{lex} = 26.501 + 4.796 \cdot \log(\text{gdp\_pcap})$$
 ```{r, echo = FALSE, message = FALSE}
 #define the linera regression model 
 model_short <- lm(lex ~ log(gdp_pcap), data = df_clean)
-
-#plot the observed values against the fitted model values 
-df_fitted <- cbind(model_short$fitted.value, df_clean$lex)
-colnames(df_fitted) <- c('model_lex','sample_lex')
-df_fitted <- as.data.frame(df_fitted)
-plot1 <- df_fitted %>%
-    ggplot(aes(x=model_lex, y=sample_lex)) + 
-    geom_point() + 
-    labs (
-        title = 'Observed vs. Fitted',
-        x = 'Fitted values',
-        y = 'Observed values'
-    )
-
-#plot the residuals aginst the fitted model values 
-resid_df <- tibble::tibble(fitted = model_short$fitted, residual = model_short$residuals)
-plot2 <- resid_df |>
-  ggplot2::ggplot(ggplot2::aes(x = fitted, y = residual)) +
-  ggplot2::geom_point(alpha = 0.6) +
-  ggplot2::geom_smooth(se = FALSE, color = "red") +
-  ggplot2::geom_hline(yintercept = 0, linetype = "dashed", color = "gray30") +
-  ggplot2::labs(x = "Fitted values", y = "Residuals", title = "Residuals vs Fitted")
-
-plot1|plot2
-
 ```
+
+The observed vs. fitted plot suggests that log-GDP-pcap model captures the general positive correlation with life expectancy, since fitted values track the observed values fairly well. However, the residuals vs. fitted values plot shows a slight systematic curvature rather than a random scatter around zero, specifically at the higher fitted values. This demonstrates that GDP per capital does not capture the relationship completely and additional predictors are necessary to improve the model fit.
+
 
 We perform a t-test of the simple model coefficients using heteroskedastic variance:
 ```{r, echo=FALSE}
@@ -272,8 +250,53 @@ modelsummary(
 )
 ```
 
+```{r,echo=FALSE}
+demographics <- lm(
+  lex ~ log(gdp_pcap) +
+    children_per_woman_total_fertil +
+    median_age_years,
+  data = df
+)
 
+demographics_inequality <- lm(
+  lex ~ log(gdp_pcap) +
+    children_per_woman_total_fertil +
+    median_age_years +
+    log(population_density_per_square_k) +
+    gini,
+  data = df
+)
+
+anova(demographics, demographics_inequality)
+```
+The ANOVA test between the models with and without inequality and population characteristics show that adding the log population density and the Gini index significantly improves model fit, with F-statistic of 9.47 and p-value of 0.0001. Therefore, we reject the NULL hypothesis and concludes that the model with both demographic factors and inequality characteristics explain significantly more variable in life expectancy. 
 
 
 # Appendix 
+```{r, echo = FALSE, message = FALSE}
 
+#plot the observed values against the fitted model values 
+df_fitted <- cbind(model_short$fitted.value, df_clean$lex)
+colnames(df_fitted) <- c('model_lex','sample_lex')
+df_fitted <- as.data.frame(df_fitted)
+plot1 <- df_fitted %>%
+    ggplot(aes(x=model_lex, y=sample_lex)) + 
+    geom_point() + 
+    labs (
+        title = 'Observed vs. Fitted',
+        x = 'Fitted values',
+        y = 'Observed values'
+    )
+
+#plot the residuals aginst the fitted model values 
+resid_df <- tibble::tibble(fitted = model_short$fitted, residual = model_short$residuals)
+plot2 <- resid_df |>
+  ggplot2::ggplot(ggplot2::aes(x = fitted, y = residual)) +
+  ggplot2::geom_point(alpha = 0.6) +
+  ggplot2::geom_smooth(se = FALSE, color = "red") +
+  ggplot2::geom_hline(yintercept = 0, linetype = "dashed", color = "gray30") +
+  ggplot2::labs(x = "Fitted values", y = "Residuals", title = "Residuals vs Fitted")
+
+plot1|plot2
+
+```
