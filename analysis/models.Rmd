@@ -19,17 +19,12 @@ library(ggplot2)
 library(modelsummary)
 library(tidyr)
 
-df <- read_excel('../data/203_projectdata.xlsx', sheet = '2022')
+# Import clean data file.
+df_clean <- read_csv('../data/combined_data_2022.csv')
 
-# check missing GDP per capita
-sum(is.na(df$gdp_pcap))
 
-# drop missing rows
 
-df_clean <- df %>%
-  filter(!is.na(gdp_pcap))
-
-# check missing rows again
+# Check missing rows.
 sum(is.na(df_clean$gdp_pcap))
 sum(is.na(df_clean$lex))
 
@@ -100,7 +95,7 @@ coeftest(model_base, vcov = vcovHC(model_base, type = "HC1"))
 ```{r}
 model_2 <- lm(
   lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
+    children_per_woman_total_fertility +
     median_age_years,
     data = df_clean
 )
@@ -116,10 +111,10 @@ anova(model_base, model_2)
 ```{r}
 model_3 <- lm(
   lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
+    children_per_woman_total_fertility +
     median_age_years +
     gini +
-    population_density_per_square_k,
+    population_density_per_square_km,
     data = df_clean
 )
 
@@ -133,10 +128,10 @@ anova(model_2, model_3)
 ```{r}
 model_4 <- lm(
   lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
+    children_per_woman_total_fertility +
     median_age_years +
     gini +
-    log(population_density_per_square_k),
+    log(population_density_per_square_km),
     data = df_clean
 )
 
@@ -162,8 +157,8 @@ modelsummary(
     "(Intercept)" = "Intercept",
     "gdp_pcap" = "GDP per Capita",
     "log(gdp_pcap)" = "Log GDP per Capita",
-    "children_per_woman_total_fertil" = "Children per Woman",
-    "log(population_density_per_square_k)" = "Log Population Density",
+    "children_per_woman_total_fertility" = "Children per Woman",
+    "log(population_density_per_square_km)" = "Log Population Density",
     "median_age_years" = "Median Age",
     "gini" = "Gini Index"
   )

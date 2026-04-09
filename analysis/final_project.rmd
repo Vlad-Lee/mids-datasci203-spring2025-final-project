@@ -42,25 +42,12 @@ We have sourced our data from <a href='www.gapminder.org'>www.gapminder.org</a>,
 
 ```{r, echo=FALSE, results=FALSE}
 
-df <- read_excel('../data/203_projectdata.xlsx', sheet = '2022')
+df_clean <- read_csv('../data/combined_data_2022.csv')
 glimpse(df)
 
 colnames(df)
 ```
 
-```{r, echo = FALSE, message = FALSE}
-# check missing GDP per capita
-sum(is.na(df$gdp_pcap))
-
-# drop missing rows
-
-df_clean <- df %>%
-  filter(!is.na(gdp_pcap))
-
-# check missing rows again
-sum(is.na(df_clean$gdp_pcap))
-sum(is.na(df_clean$lex))
-```
 
 
 ## 2.1 Columns
@@ -181,7 +168,7 @@ demographic factors.
 # Estimate model with demographic variables.
 model_2 <- lm(
   lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
+    children_per_woman_total_fertility +
     median_age_years,
     data = df_clean
 )
@@ -213,10 +200,10 @@ index, which provides meaningful additional explanatory power beyond GDP and dem
 ```{r, echo = FALSE, message = FALSE, output=FALSE}
 model_3 <- lm(
   lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
+    children_per_woman_total_fertility +
     median_age_years +
     gini +
-    log(population_density_per_square_k),
+    log(population_density_per_square_km),
     data = df_clean
 )
 
@@ -224,7 +211,8 @@ coeftest(model_3, vcov = vcovHC(model_3, type = "HC1"))
 anova(model_2, model_3)
 ```
 
-# Summary of Models
+The ANOVA test between the models with and without inequality and population characteristics show that adding the log population density and the Gini index significantly improves model fit, with F-statistic of 9.47 and p-value of 0.0001. Therefore, we reject the NULL hypothesis and concludes that the model with both demographic factors and inequality characteristics explain significantly more variable in life expectancy.
+
 
 ```{r, echo = FALSE, message = FALSE}
 modelsummary(
@@ -242,34 +230,13 @@ modelsummary(
     "(Intercept)" = "Intercept",
     "gdp_pcap" = "GDP per Capita",
     "log(gdp_pcap)" = "Log GDP per Capita",
-    "children_per_woman_total_fertil" = "Children per Woman",
-    "log(population_density_per_square_k)" = "Log Population Density",
+    "children_per_woman_total_fertility" = "Children per Woman",
+    "log(population_density_per_square_km)" = "Log Population Density",
     "median_age_years" = "Median Age",
     "gini" = "Gini Index"
   )
 )
 ```
-
-```{r,echo=FALSE}
-demographics <- lm(
-  lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
-    median_age_years,
-  data = df
-)
-
-demographics_inequality <- lm(
-  lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertil +
-    median_age_years +
-    log(population_density_per_square_k) +
-    gini,
-  data = df
-)
-
-anova(demographics, demographics_inequality)
-```
-The ANOVA test between the models with and without inequality and population characteristics show that adding the log population density and the Gini index significantly improves model fit, with F-statistic of 9.47 and p-value of 0.0001. Therefore, we reject the NULL hypothesis and concludes that the model with both demographic factors and inequality characteristics explain significantly more variable in life expectancy. 
 
 
 # Appendix 
