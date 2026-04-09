@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.6)  8 APR 2026 22:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.6)  8 APR 2026 23:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -599,87 +599,58 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 90.
 (c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 139.
-(c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 {c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
-Overfull \hbox (7.38986pt too wide) in paragraph at lines 148--148
-[]\T1/lmtt/m/n/10.95 ## -- Column specification --------------------------------------------------------[] 
- []
-
-
-Overfull \hbox (1.64113pt too wide) in paragraph at lines 148--148
-[]\T1/lmtt/m/n/10.95 ## dbl (10): broadband_subscribers_per_100_people, cell_phones_per_100_people, ...[] 
- []
-
-
-Overfull \hbox (13.1386pt too wide) in paragraph at lines 148--148
-[]\T1/lmtt/m/n/10.95 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.[] 
- []
-
 <final_project_files/figure-latex/unnamed-chunk-3-1.pdf, id=15, 469.755pt x 325.215pt>
 File: final_project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use final_project_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 188.
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 177.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 194--195
+Underfull \hbox (badness 10000) in paragraph at lines 183--184
 
  []
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 195.
-[3{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./final_project_files/figure-latex/unnamed-chunk-3-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 239--255
+(Font)              <10.95> on input line 184.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 202.
+(c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [3{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./final_project_files/figure-latex/unnamed-chunk-3-1.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 225--241
 
  []
 
 [4]
-Overfull \hbox (30.3848pt too wide) in paragraph at lines 309--309
-[]\T1/lmtt/m/n/10.95 ## Model 2: lex ~ log(gdp_pcap) + children_per_woman_total_fertility + median_age_years[] 
- []
-
-[5]
-Overfull \hbox (30.3848pt too wide) in paragraph at lines 369--369
-[]\T1/lmtt/m/n/10.95 ## Model 1: lex ~ log(gdp_pcap) + children_per_woman_total_fertility + median_age_years[] 
- []
-
-
-Overfull \hbox (41.88226pt too wide) in paragraph at lines 369--369
-[]\T1/lmtt/m/n/10.95 ## Model 2: lex ~ log(gdp_pcap) + children_per_woman_total_fertility + median_age_years +[] 
- []
-
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 410.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 333.
 (c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<final_project_files/figure-latex/unnamed-chunk-10-1.pdf, id=49, 469.755pt x 325.215pt>
-File: final_project_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
-<use final_project_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 415.
+<final_project_files/figure-latex/unnamed-chunk-11-1.pdf, id=45, 469.755pt x 325.215pt>
+File: final_project_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
+<use final_project_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 349.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[6] [7] [8 <./final_project_files/figure-latex/unnamed-chunk-10-1.pdf>] (./final_project.aux)
+[5] [6 <./final_project_files/figure-latex/unnamed-chunk-11-1.pdf>] (./final_project.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17743 strings out of 469339
- 356672 string characters out of 5464868
- 762027 words of memory out of 5000000
- 46361 multiletter control sequences out of 15000+600000
+ 17664 strings out of 469339
+ 354910 string characters out of 5464868
+ 754494 words of memory out of 5000000
+ 46284 multiletter control sequences out of 15000+600000
  672238 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,10n,109p,603b,1314s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,10n,109p,371b,1240s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on final_project.pdf (8 pages, 226612 bytes).
+Output written on final_project.pdf (6 pages, 220715 bytes).
 PDF statistics:
- 144 PDF objects out of 1000 (max. 8388607)
- 113 compressed objects within 2 object streams
- 19 named destinations out of 1000 (max. 500000)
+ 134 PDF objects out of 1000 (max. 8388607)
+ 105 compressed objects within 2 object streams
+ 17 named destinations out of 1000 (max. 500000)
  75 words of extra memory for PDF output out of 10000 (max. 10000000)
 

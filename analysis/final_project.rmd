@@ -40,7 +40,7 @@ TODO:
 
 We have sourced our data from <a href='www.gapminder.org'>www.gapminder.org</a>, a Swedish organization that curates reliable data on global trends, compiled from sources such as the World Bank. The data includes annual country level observations for 193 countries spanning multiple decades. For this project we construct a cross sectional dataset using data from 2022. The data is presented as one row per country (195 observations) and we will use country metrics as our features that are normalized (e.g. per person) to remove country size effects. 
 
-```{r, echo=FALSE, results=FALSE}
+```{r, include = FALSE}
 
 df_clean <- read_csv('../data/combined_data_2022.csv')
 glimpse(df)
@@ -105,28 +105,28 @@ cor(df_clean$lex, log(df_clean$gdp_pcap))
 The correlation coefficient of life expectancy against the log of GPD per capita is 0.796, supporting the clear linear relationship indicated in the scatter plot.  
 
 We construct our primary regression model as:  
-$$\text{lex} = \alpha + \beta \cdot \log(\text{gdp\_pcap})$$
+$$\text{lex} = \alpha + \beta \cdot \log(\text{GDP per capita})$$
 
 Following the application of OLS, our model is determined as:
-$$\text{lex} = 26.501 + 4.796 \cdot \log(\text{gdp\_pcap})$$
+$$\text{lex} = 26.501 + 4.796 \cdot \log(\text{GDP per capita})$$
 
 
 ```{r, echo = FALSE, message = FALSE}
-#define the linera regression model 
+#define the linear regression model 
 model_short <- lm(lex ~ log(gdp_pcap), data = df_clean)
 ```
 
 The observed vs. fitted plot suggests that log-GDP-pcap model captures the general positive correlation with life expectancy, since fitted values track the observed values fairly well. However, the residuals vs. fitted values plot shows a slight systematic curvature rather than a random scatter around zero, specifically at the higher fitted values. This demonstrates that GDP per capital does not capture the relationship completely and additional predictors are necessary to improve the model fit.
 
 
-We perform a t-test of the simple model coefficients using heteroskedastic variance:
+We perform a t-test of the simple model coefficients using robust variance. In this model and all subsequent specifications, we report robust standard errors to account for potential heteroskedasticity:
 ```{r, echo=FALSE}
 coeftest(model_short, vcovHC(model_short, type = "HC1"))
 ```
 
-Our p-value (2.2 x 10^-16) is close to zero and much smaller than our target level of significance at 0.05. As a result, we can reject our NULL hypothesis and conclude that there is overwhelming evidence that there is a postive relationship between GDP per capita and life expectancy. 
+The p-value is below 0.001 and much smaller than our target level of significance at 0.05. As a result, we can reject our NULL hypothesis and conclude that there is overwhelming evidence that there is a postive relationship between GDP per capita and life expectancy. 
 
-Our Level-Log model indicates that a 10% increase in GDP per capita is associated with an approximately 0.48 year increase in life expectancy at birth. We note that this is a descriptive anlaysis comparing this relationship between countries and does not necessarily imply that if one particular country were to increase GDP per capita by 10%, then that country would likely see an 0.48 year increase in life expectancy at birth.  
+A 10 percent increase in GDP per capita is associated with an approximately 0.48 year increase in life expectancy, though this reflects a cross country relationship rather than a causal effect within a given country. 
 
 # 4. Expanded Analysis
 <span style="color:red">
@@ -152,19 +152,17 @@ retain GDP per capita as our primary measure of economic development.
 
 ## 4.1 Demographic Factors
 
-We first extend the model by adding demographic variables: fertility (children per woman) and median age. Both
-variables are statistically significant and have intuitive interpretations. Higher fertility is associated with lower life
-expectancy, while higher median age is associated with higher life expectancy.
-Including these variables improves model fit relative to the baseline, indicating that demographic structure explains
-additional variation in life expectancy. The coefficient on GDP per capita remains positive but decreases in
-magnitude, suggesting that part of the relationship between GDP and life expectancy is captured through
-demographic factors.
+We first extend the model by adding fertility (children per woman) and median age. Both variables are statistically significant, with higher fertility associated with lower life expectancy and higher median age associated with higher life expectancy. Including these variables improves model fit and reduces the magnitude of the GDP coefficient, suggesting that part of the relationship between income and life expectancy operates through demographic factors.
 
-\[
-\text{lex} = 46.33 + 2.42 \cdot \log(\text{GDP per capita}) - 1.27 \cdot \text{children per woman} + 0.20 \cdot \text{median age}
-\]
+$$
+\begin{aligned}
+\text{lex} &= 46.327 + 2.415 \cdot \log(\text{GDP per capita}) \\
+           &\quad - 1.274 \cdot \text{children per woman} \\
+           &\quad + 0.205 \cdot \text{median age}
+\end{aligned}
+$$
 
-```{r, echo = FALSE, message = FALSE}
+```{r, include = FALSE}
 # Estimate model with demographic variables.
 model_2 <- lm(
   lex ~ log(gdp_pcap) +
@@ -175,35 +173,31 @@ model_2 <- lm(
 
 # Use robust standard errors.
 coeftest(model_2, vcov = vcovHC(model_2, type = "HC1"))
+```
+```{r, include = FALSE}
 anova(model_short, model_2)
 ```
 
-## 4.2 Inequality and Population Characteristics
+The ANOVA test shows that adding the Gini index significantly improves model fit (F = 18.85, p < 0.0001), indicating that inequality adds meaningful explanatory power for life expectancy.
 
-We next incorporate measures of inequality and population characteristics by adding the Gini index, a measure of
-wealth inequality, and population density. We observe a negative and statistically significant coefficient for the Gini
-index variable, indicating that higher inequality is associated with lower life expectancy, holding other factors
-constant.
-Population density does not appear to contribute independently in this specification, as its coefficient is not statistically
-significant. However, the inclusion of these variables jointly improves model fit, as supported by a statistically
-significant F test comparing this specification to the previous model. This improvement is primarily driven by the Gini
-index, which provides meaningful additional explanatory power beyond GDP and demographic factors.
+## 4.2 Inequality
 
-\[
+We next incorporate inequality by adding the Gini index, a measure of wealth inequality. We observe a negative and statistically significant coefficient for the Gini index, indicating that higher inequality is associated with lower life expectancy, holding other factors constant. The coefficient on median age becomes statistically insignificant in this specification, while the effects of GDP per capita and fertility remain statistically significant and consistent in direction.
+
+$$
 \begin{aligned}
-\text{lex} =\;& 53.79 + 2.34 \cdot \log(\text{GDP per capita}) \\
-& - 1.44 \cdot \text{children per woman} + 0.13 \cdot \text{median age} \\
-& - 0.15 \cdot \text{Gini} - 0.391 \cdot \log(\text{population density})
+\text{lex} &= 56.893 + 2.252 \cdot \log(\text{GDP per capita}) \\
+           &\quad - 1.541 \cdot \text{children per woman} + 0.136 \cdot \text{median age} \\
+           &\quad - 0.159 \cdot \text{Gini}
 \end{aligned}
-\]
+$$
 
-```{r, echo = FALSE, message = FALSE, output=FALSE}
+```{r, include = FALSE}
 model_3 <- lm(
   lex ~ log(gdp_pcap) +
     children_per_woman_total_fertility +
     median_age_years +
-    gini +
-    log(population_density_per_square_km),
+    gini,
     data = df_clean
 )
 
@@ -211,8 +205,10 @@ coeftest(model_3, vcov = vcovHC(model_3, type = "HC1"))
 anova(model_2, model_3)
 ```
 
-The ANOVA test between the models with and without inequality and population characteristics show that adding the log population density and the Gini index significantly improves model fit, with F-statistic of 9.47 and p-value of 0.0001. Therefore, we reject the NULL hypothesis and concludes that the model with both demographic factors and inequality characteristics explain significantly more variable in life expectancy.
 
+The ANOVA test comparing models with and without inequality shows that adding the Gini index significantly improves model fit, with an F statistic of 15.15 and a p-value of 0.0001. We reject the null hypothesis and conclude that including inequality explains significantly more variation in life expectancy.
+
+# Appendix
 
 ```{r, echo = FALSE, message = FALSE}
 modelsummary(
@@ -231,15 +227,22 @@ modelsummary(
     "gdp_pcap" = "GDP per Capita",
     "log(gdp_pcap)" = "Log GDP per Capita",
     "children_per_woman_total_fertility" = "Children per Woman",
-    "log(population_density_per_square_km)" = "Log Population Density",
     "median_age_years" = "Median Age",
     "gini" = "Gini Index"
   )
 )
 ```
 
+Data obtained from Gapminder (https://www.gapminder.org/data/).
 
-# Appendix 
+Baseline model (Life Expectancy ~ Log(GDP per Capita)) - Shows a strong positive relationship while accounting for skewness in GDP per capita, improving interpretability.
+
+Demographics model (adding fertility and median age) - Adds key population characteristics and shows that factors are statistically significant predictors of life expectancy.
+
+Final model (adding inequality) - Including the Gini index shows that it is statistically significant, while median age becomes insignificant.
+
+
+
 ```{r, echo = FALSE, message = FALSE}
 
 #plot the observed values against the fitted model values 

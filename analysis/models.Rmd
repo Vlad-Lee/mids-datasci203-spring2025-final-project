@@ -113,8 +113,7 @@ model_3 <- lm(
   lex ~ log(gdp_pcap) +
     children_per_woman_total_fertility +
     median_age_years +
-    gini +
-    population_density_per_square_km,
+    gini,
     data = df_clean
 )
 
@@ -125,28 +124,13 @@ anova(model_2, model_3)
 ```
 
 
-```{r}
-model_4 <- lm(
-  lex ~ log(gdp_pcap) +
-    children_per_woman_total_fertility +
-    median_age_years +
-    gini +
-    log(population_density_per_square_km),
-    data = df_clean
-)
-
-coeftest(model_4, vcov = vcovHC(model_4, type = "HC1"))
-
-anova(model_2, model_4)
-```
-
 
 ```{r}
 modelsummary(
   list(
     "Baseline" = model_base,
     "Demographics" = model_2,
-    "Final Model" = model_4
+    "Final Model" = model_3
   ),
   vcov = "HC1",
   stars = TRUE,
@@ -158,7 +142,6 @@ modelsummary(
     "gdp_pcap" = "GDP per Capita",
     "log(gdp_pcap)" = "Log GDP per Capita",
     "children_per_woman_total_fertility" = "Children per Woman",
-    "log(population_density_per_square_km)" = "Log Population Density",
     "median_age_years" = "Median Age",
     "gini" = "Gini Index"
   )
