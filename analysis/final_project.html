@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vlad Lee, Sophia Liang, Mark Randall">
+
+<title>Final Project: Description Using Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="final_project_files/libs/clipboard/clipboard.min.js"></script>
+<script src="final_project_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="final_project_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="final_project_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="final_project_files/libs/quarto-html/popper.min.js"></script>
+<script src="final_project_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="final_project_files/libs/quarto-html/anchor.min.js"></script>
+<link href="final_project_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="final_project_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="final_project_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="final_project_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="final_project_files/libs/bootstrap/bootstrap-fccc008578305dff2e30b404940ee189.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Final Project: Description Using Models</h1>
+<p class="subtitle lead">UCB MIDS 203 Fall 2026 Section 6 Final Project Report</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vlad Lee, Sophia Liang, Mark Randall </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>1. Introduction</h1>
+<p>Our research question is to describe at a country level how the Life Expectancy is related to economic development, measured by GDP per capita. Our audience is individuals who are not socio-economic professionals, but would like to expand their worldview of how a range of societal metrics can influence the typical individual’s life expectancy, and understand broader patterns in global development and living standards. The larger context of the question lies in discussions of economic development, global inequality, and public health, where researchers and policymakers aim to understand why countries experience different health outcomes and living standards.</p>
+<p>Predicting life expectancy is studied by Samuel Preston(1975), who proposed a Preston curve, which demonstrates a concave relationship between life expectancy and GDP per capita. Additionally, Roffia et al.&nbsp;conducted a longitudinal study to determine life expectancy at birth based on certain socioeconomic and demographic factors. Our rerport brings together multiple dimensions of national development in one accessible country-level framework, providing a holistic picture describing how multiple kinds of determinants interact and influence life expectancy.</p>
+</section>
+<section id="source-data" class="level1">
+<h1>2. Source Data</h1>
+<p>Our data is sourced from <a href="www.gapminder.org">Gapminder</a>, a Swedish organization that curates reliable data on global trends, compiled from sources such as the World Bank. The data includes annual country level observations spanning multiple decades. We construct a cross sectional dataset using data from 2022, resulting in one row per country (193 observations). We use country metrics as our features that are normalized (e.g.&nbsp;per person) to remove population size effects.</p>
+<p>Each country is represented by a 3-letter country code and country long name. The outcome variable for our analysis is life expectancy (<strong>lex</strong>), which captures overall population health. Our primary explanatory variable is GDP per capita (<strong>gdp_pcap</strong>), which measures economic development. Though the online dataset includes hundreds of indicators, we have selected subset to represent broad categories of health, inequality, population demographics, economy and infrastructure:</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td>children_per_woman_total_fertility</td>
+<td>average_daily_income</td>
+</tr>
+<tr class="even">
+<td>population_density_per_square_k</td>
+<td>gini coefficient</td>
+</tr>
+<tr class="odd">
+<td>cell_phones_per_100_people</td>
+<td>median_age_years</td>
+</tr>
+<tr class="even">
+<td>broadband_subscribers_per_100_p</td>
+<td>co2_pcap_cons</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="primary-analysis" class="level1">
+<h1>3. Primary Analysis</h1>
+<p>Our primary anlysis describes the relationship between life expectancy at birth and GDP per capita across our country data for 2022. GDP per capita is a currency measurement and currency data (e.g.&nbsp;salary, earnings) is typically well suited to a logarithmic transformation. We plot the observed life expectancy data against the observed GDP per capita data, and note that a logarithmic transformation does capture a linear relationship more effectively than the untransformed data:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_project_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The correlation coefficient of life expectancy against the log of GPD per capita is 0.796, supporting the clear linear relationship indicated visually in the scatter plot. We regress life expectancy at birth on GRP per capita and following the application of OLS we specify as model as: <span class="math display">\[\text{lex} = 26.501 + 4.796 \cdot \log(\text{GDP per capita})\]</span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_project_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+<p>The observed vs.&nbsp;fitted plot suggests that log-GDP-pcap model captures the general positive correlation with life expectancy, since fitted values track the observed values well. However, the residuals vs.&nbsp;fitted values plot shows a slight systematic curvature rather than a random scatter around zero, specifically at the higher fitted values, although we note only one obserbation at this range. This demonstrates that GDP per capital does not capture the relationship completely and additional predictors are necessary to improve the model fit.</p>
+<p>We perform a t-test of the simple model coefficients using robust variance. In this model and all subsequent specifications, we report robust standard errors to account for heteroskedasticity:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+              Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept)   26.50065    2.70927  9.7815 &lt; 2.2e-16 ***
+log(gdp_pcap)  4.79633    0.27998 17.1311 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The p-value is below 0.001 and much smaller than our target level of significance at 0.05. As a result, we can reject our NULL hypothesis and conclude that there is overwhelming evidence that there is a postive relationship between GDP per capita and life expectancy. A 10 percent increase in GDP per capita is associated with an approximately 0.48 year increase in life expectancy, though this reflects a cross country relationship rather than a causal effect within a given country.</p>
+</section>
+<section id="clm-assumptions" class="level1">
+<h1>4. CLM Assumptions</h1>
+<p></p>
+</section>
+<section id="expanded-analysis" class="level1">
+<h1>5. Expanded Analysis</h1>
+<p>To better understand the relationship between life expectancy and broader measures of development, we extend our baseline model by incorporating additional variables capturing demographics, inequality, and population characteristics. Before constructing the expanded model, we note that several variables are strongly correlated with GDP per capita. In particular, average daily income is highly correlated with GDP per capita (correlation <span class="math inline">\(\approx 0.96\)</span>), indicating that both variables capture similar aspects of economic development. Including both in the model would introduce multicollinearity and lead to unstable coefficient estimates. For this reason, we exclude average daily income and retain GDP per capita as our primary measure of economic development.</p>
+<section id="demographic-factors" class="level2">
+<h2 class="anchored" data-anchor-id="demographic-factors">5.1 Demographic Factors</h2>
+<p>We first extend the model by adding demographic features for fertility (children per woman) and median age. Higher fertility is associated with lower life expectancy and higher median age is associated with higher life expectancy. <span class="math display">\[
+\begin{aligned}
+\text{lex} &amp;= 46.327 + 2.415 \cdot \log(\text{GDP per capita}) \\
+           &amp;\quad - 1.274 \cdot \text{children per woman} \\
+           &amp;\quad + 0.205 \cdot \text{median age}
+\end{aligned}
+\]</span></p>
+<p>A coefficient test shows that all three coefficients are statistically significant at the 0.05 level, with robust standard errors. Including these variables improves model fit and reduces the magnitude of the GDP coefficient, suggesting that part of the relationship between income and life expectancy operates through demographic factors. An ANOVA test confirms that adding the demographic factors significantly improves model fit (F = 18.85, p &lt; 0.0001), indicating that these factors add meaningful explanatory power for life expectancy.</p>
+</section>
+<section id="inequality" class="level2">
+<h2 class="anchored" data-anchor-id="inequality">5.2 Inequality</h2>
+<p>We next incorporate inequality by adding the Gini index, a measure of wealth inequality. We observe a negative and statistically significant coefficient for the Gini index, indicating that higher inequality is associated with lower life expectancy, holding other factors constant. The coefficient on median age becomes statistically insignificant in this specification (p = 0.07), while the effects of GDP per capita and fertility remain statistically significant and consistent in direction.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{lex} &amp;= 56.893 + 2.252 \cdot \log(\text{GDP per capita}) \\
+           &amp;\quad - 1.541 \cdot \text{children per woman} + 0.136 \cdot \text{median age} \\
+           &amp;\quad - 0.159 \cdot \text{Gini}
+\end{aligned}
+\]</span></p>
+<p>An ANOVA test comparing models with and without inequality shows that adding the Gini index significantly improves model fit (F = 15.15, p = 0.0001). We reject the null hypothesis and conclude that including inequality explains significantly more variation in life expectancy.</p>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<section id="requirements" class="level2">
+<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
+<p>The one-page appendix is intended for extra information that will help your instructor assess your model building process. Please include the following elements:</p>
+<ol type="1">
+<li>A Link to your Data Source. If you used specialized code to access your data, please include that here. Please make sure your instructor has the ability to access the data.</li>
+<li>A List of Model Specifications you Tried. We are interested in seeing how you arrived at your final model. In just a sentence, please provide a reason or something that you learned from each specification.</li>
+<li>A Residuals-vs-Fitted-values Plot. Please generate this plot for your final model that includes variable transformations. Your instructor will use this plot to assess how well you have captured the shape of the relationship between your X and your Y variable. For example, if there is a clear parabolic pattern in your residuals-vs-fitted plot, that is a signal that you should have included a square term.</li>
+</ol>
+</section>
+<section id="datasource" class="level2">
+<h2 class="anchored" data-anchor-id="datasource">Datasource</h2>
+<p>Our data was initially sourced from <a href="www.gapminder.org">www.gapminder.org</a>, using the download interface provided on the website. After confirmning our approach, we downloaded individual CSV files for each indicator from <a href="https://github.com/open-numbers/ddf--open_numbers--world_development_indicators">github</a> and combined these into a single dataset for our anlaysis. The code for this data wrrangling process is accessible in the data_cleaning folder in our project repo.</p>
+<p>Given that the overall clean dataset is not large, we have included this CSV file in our repo under data/combined_data_2022.csv. We recommend that the instructor access this file directly to assess the analysis presented herein.</p>
+<div class="cell">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_bxta3vdyjygfz1thj2f7 = TinyTable.createTableFunctions("tinytable_bxta3vdyjygfz1thj2f7");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '14', j: 2 }, { i: '14', j: 3 }, { i: '14', j: 4 } ], css_id: 'tinytable_css_ikk6pkinh0eeeevbiqyj',}, 
+          { positions: [ { i: '10', j: 2 }, { i: '10', j: 3 }, { i: '10', j: 4 } ], css_id: 'tinytable_css_002l0iea8zny5lfbp0fb',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 }, { i: '9', j: 3 }, { i: '11', j: 3 }, { i: '12', j: 3 }, { i: '13', j: 3 }, { i: '1', j: 4 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '5', j: 4 }, { i: '6', j: 4 }, { i: '7', j: 4 }, { i: '8', j: 4 }, { i: '9', j: 4 }, { i: '11', j: 4 }, { i: '12', j: 4 }, { i: '13', j: 4 } ], css_id: 'tinytable_css_09nvn182skic2emjd45v',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 } ], css_id: 'tinytable_css_ek1y3sex7wsdyo4ts51l',}, 
+          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_rtqknzjznd6ejnzc1wwt',}, 
+          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_ot7h07xvbcg3k3tednqd',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_naw2un4kquq1y391lbhf',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_pvlr7h3xmfoj07r0ufl2',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_bxta3vdyjygfz1thj2f7.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_ikk6pkinh0eeeevbiqyj, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_ikk6pkinh0eeeevbiqyj {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_002l0iea8zny5lfbp0fb, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_002l0iea8zny5lfbp0fb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_09nvn182skic2emjd45v, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_09nvn182skic2emjd45v { text-align: center }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_ek1y3sex7wsdyo4ts51l, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_ek1y3sex7wsdyo4ts51l {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_rtqknzjznd6ejnzc1wwt, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_rtqknzjznd6ejnzc1wwt {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_ot7h07xvbcg3k3tednqd, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_ot7h07xvbcg3k3tednqd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_naw2un4kquq1y391lbhf, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_naw2un4kquq1y391lbhf { text-align: left }
+    #tinytable_bxta3vdyjygfz1thj2f7 td.tinytable_css_pvlr7h3xmfoj07r0ufl2, #tinytable_bxta3vdyjygfz1thj2f7 th.tinytable_css_pvlr7h3xmfoj07r0ufl2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_bxta3vdyjygfz1thj2f7" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <caption>Regression Models of Life Expectancy</caption>
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Baseline</th>
+                <th scope="col" data-row="0" data-col="3">Demographics</th>
+                <th scope="col" data-row="0" data-col="4">Final Model</th>
+              </tr>
+        </thead>
+        <tfoot><tr><td colspan="4">+ p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td></tr></tfoot>
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">Intercept</td>
+                  <td data-row="1" data-col="2">26.501***</td>
+                  <td data-row="1" data-col="3">46.327***</td>
+                  <td data-row="1" data-col="4">56.893***</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(2.709)</td>
+                  <td data-row="2" data-col="3">(5.259)</td>
+                  <td data-row="2" data-col="4">(6.068)</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">Log GDP per Capita</td>
+                  <td data-row="3" data-col="2">4.796***</td>
+                  <td data-row="3" data-col="3">2.415***</td>
+                  <td data-row="3" data-col="4">2.252***</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(0.280)</td>
+                  <td data-row="4" data-col="3">(0.532)</td>
+                  <td data-row="4" data-col="4">(0.548)</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">Children per Woman</td>
+                  <td data-row="5" data-col="2"></td>
+                  <td data-row="5" data-col="3">-1.274**</td>
+                  <td data-row="5" data-col="4">-1.541***</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2"></td>
+                  <td data-row="6" data-col="3">(0.480)</td>
+                  <td data-row="6" data-col="4">(0.449)</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">Median Age</td>
+                  <td data-row="7" data-col="2"></td>
+                  <td data-row="7" data-col="3">0.205**</td>
+                  <td data-row="7" data-col="4">0.136+</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1"></td>
+                  <td data-row="8" data-col="2"></td>
+                  <td data-row="8" data-col="3">(0.078)</td>
+                  <td data-row="8" data-col="4">(0.075)</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">Gini Index</td>
+                  <td data-row="9" data-col="2"></td>
+                  <td data-row="9" data-col="3"></td>
+                  <td data-row="9" data-col="4">-0.159***</td>
+                </tr>
+                <tr>
+                  <td data-row="10" data-col="1"></td>
+                  <td data-row="10" data-col="2"></td>
+                  <td data-row="10" data-col="3"></td>
+                  <td data-row="10" data-col="4">(0.047)</td>
+                </tr>
+                <tr>
+                  <td data-row="11" data-col="1">Num.Obs.</td>
+                  <td data-row="11" data-col="2">193</td>
+                  <td data-row="11" data-col="3">193</td>
+                  <td data-row="11" data-col="4">193</td>
+                </tr>
+                <tr>
+                  <td data-row="12" data-col="1">R2</td>
+                  <td data-row="12" data-col="2">0.633</td>
+                  <td data-row="12" data-col="3">0.694</td>
+                  <td data-row="12" data-col="4">0.717</td>
+                </tr>
+                <tr>
+                  <td data-row="13" data-col="1">R2 Adj.</td>
+                  <td data-row="13" data-col="2">0.631</td>
+                  <td data-row="13" data-col="3">0.689</td>
+                  <td data-row="13" data-col="4">0.711</td>
+                </tr>
+                <tr>
+                  <td data-row="14" data-col="1">Std.Errors</td>
+                  <td data-row="14" data-col="2">HC1</td>
+                  <td data-row="14" data-col="3">HC1</td>
+                  <td data-row="14" data-col="4">HC1</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p>Data obtained from Gapminder (https://www.gapminder.org/data/).</p>
+<p>Baseline model (Life Expectancy ~ Log(GDP per Capita)) - Shows a strong positive relationship while accounting for skewness in GDP per capita, improving interpretability.</p>
+<p>Demographics model (adding fertility and median age) - Adds key population characteristics and shows that factors are statistically significant predictors of life expectancy.</p>
+<p>Final model (adding inequality) - Including the Gini index shows that it is statistically significant, while median age becomes insignificant.</p>
+</section>
+</section>
+<section id="remove-mark" class="level1">
+<h1>Remove (MarK)</h1>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_project_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
