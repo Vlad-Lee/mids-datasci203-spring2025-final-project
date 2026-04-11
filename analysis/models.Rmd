@@ -148,6 +148,14 @@ modelsummary(
 )
 ```
 
+### Check leverage plots.
+
+```{r}
+plot(model_3, which = 5)
+
+```
+
+
 
 
 

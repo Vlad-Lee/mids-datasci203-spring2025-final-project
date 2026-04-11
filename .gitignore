@@ -50,3 +50,6 @@ rsconnect/
 
 /data
 *:Zone.Identifier
+
+# Allow the combined data file.
+!data/combined_data_2022.csv
