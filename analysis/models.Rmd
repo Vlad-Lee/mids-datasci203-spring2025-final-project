@@ -18,6 +18,7 @@ library(sandwich)
 library(ggplot2)
 library(modelsummary)
 library(tidyr)
+library(car)
 
 # Import clean data file.
 df_clean <- read_csv('../data/combined_data_2022.csv')
@@ -157,7 +158,29 @@ plot(model_3, which = 5)
 
 
 
+```{r}
+cor(
+  df_clean %>%
+    select(log_gdp = gdp_pcap,
+           children_per_woman_total_fertility,
+           median_age_years,
+           gini) %>%
+    mutate(log_gdp = log(log_gdp)),
+  use = "complete.obs"
+)
+```
 
+```{r}
+model_full <- lm(
+  lex ~ log(gdp_pcap) +
+    children_per_woman_total_fertility +
+    median_age_years +
+    gini,
+  data = df_clean
+)
+
+vif(model_full)
+```
 
 
 
