@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.11)  11 APR 2026 14:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.11)  11 APR 2026 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -256,7 +256,9 @@ Package graphics Info: Driver file: pdftex.def on input line 106.
 \Gin@req@width=\dimen188
 )
 \pandoc@box=\box63
-(c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
+(c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
+) (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count311
 \float@exts=\toks28
@@ -553,7 +555,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO)
 \BKM@id=\count380
 ))
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 98.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 99.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -564,24 +566,24 @@ LaTeX Warning: Unused global option(s):
 (./final_project.aux)
 \openout1 = `final_project.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -622,88 +624,81 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 98.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 100.
+Package hyperref Info: Link coloring OFF on input line 99.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 101.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 100.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 101.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 100.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 101.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 100.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 101.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 100.
+(Font)              <12> on input line 101.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 100.
+(Font)              <8> on input line 101.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 100.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 100.
+(Font)              <6> on input line 101.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 101.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 100.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 101.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 <final_project_files/figure-latex/unnamed-chunk-3-1.pdf, id=5, 469.755pt x 216.81pt>
 File: final_project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use final_project_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 163.
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 164.
 (pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
 [1
 
 {c:/Users/mark/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 169.
-<final_project_files/figure-latex/unnamed-chunk-6-1.pdf, id=19, 469.755pt x 216.81pt>
-File: final_project_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
-<use final_project_files/figure-latex/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 171.
-(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
-[2{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./final_project_files/figure-latex/unnamed-chunk-3-1.pdf> <./final_project_files/figure-latex/unnamed-chunk-6-1.pdf>]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 185.
+(Font)              <10.95> on input line 170.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 184.
 (c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [3] [4]
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 343.
-(c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
-File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-<final_project_files/figure-latex/unnamed-chunk-12-1.pdf, id=59, 469.755pt x 325.215pt>
-File: final_project_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf)
-<use final_project_files/figure-latex/unnamed-chunk-12-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-12-1.pdf  used on input line 361.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[5]
-Overfull \vbox (21.08842pt too high) has occurred while \output is active []
-
-[6 <./final_project_files/figure-latex/unnamed-chunk-12-1.pdf>] (./final_project.aux)
+) [2{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./final_project_files/figure-latex/unnamed-chunk-3-1.pdf>]
+<final_project_files/figure-latex/unnamed-chunk-8-1.pdf, id=36, 469.755pt x 216.81pt>
+File: final_project_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
+<use final_project_files/figure-latex/unnamed-chunk-8-1.pdf>
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 208.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
+[3 <./final_project_files/figure-latex/unnamed-chunk-8-1.pdf>] [4]
+<final_project_files/figure-latex/unnamed-chunk-13-1.pdf, id=67, 469.755pt x 201.75375pt>
+File: final_project_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
+<use final_project_files/figure-latex/unnamed-chunk-13-1.pdf>
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-13-1.pdf  used on input line 350.
+(pdftex.def)             Requested size: 469.75386pt x 201.75325pt.
+[5 <./final_project_files/figure-latex/unnamed-chunk-13-1.pdf>] (./final_project.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17991 strings out of 469339
- 360454 string characters out of 5464315
- 761497 words of memory out of 5000000
- 46588 multiletter control sequences out of 15000+600000
- 675233 words of font info for 75 fonts, out of 8000000 for 9000
+ 17276 strings out of 469339
+ 345103 string characters out of 5464959
+ 745641 words of memory out of 5000000
+ 45877 multiletter control sequences out of 15000+600000
+ 672462 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,10n,109p,412b,1224s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,9n,93p,412b,1031s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/mark/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on final_project.pdf (6 pages, 341687 bytes).
+Output written on final_project.pdf (5 pages, 276741 bytes).
 PDF statistics:
- 163 PDF objects out of 1000 (max. 8388607)
- 130 compressed objects within 2 object streams
- 24 named destinations out of 1000 (max. 500000)
- 104 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 164 PDF objects out of 1000 (max. 8388607)
+ 132 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
+ 96 words of extra memory for PDF output out of 10000 (max. 10000000)
 
