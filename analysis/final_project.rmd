@@ -25,6 +25,7 @@ library(modelsummary)
 library(scales)
 
 ```
+[Link to Github Repo](https://github.com/Vlad-Lee/mids-datasci203-spring2025-final-project)
 
 # 1. Introduction
 Our goal is to describe the relationship between life expectancy and economic development across countries, and to assess how this relationship changes when accounting for demographic and inequality factors. Our audience is individuals without a formal background in socioeconomics who are interested in better understanding how different societal metrics relate to life expectancy and broader patterns in global development and living standards. The larger context of the question lies in discussions of economic development, global inequality, and public health, where researchers and policymakers aim to understand why countries experience different health outcomes and living standards.   
