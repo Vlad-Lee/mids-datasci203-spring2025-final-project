@@ -27,12 +27,14 @@ library(scales)
 ```
 
 # 1. Introduction
-Our research question is to describe at a country level how the Life Expectancy is related to economic development, measured by GDP per capita. Our audience is individuals who are not socio-economic professionals, but would like to expand their worldview of how a range of societal metrics can influence the typical individual’s life expectancy, and understand broader patterns in global development and living standards. The larger context of the question lies in discussions of economic development, global inequality, and public health, where researchers and policymakers aim to understand why countries experience different health outcomes and living standards.   
+Our goal is to describe the relationship between life expectancy and economic development across countries, and to assess how this relationship changes when accounting for demographic and inequality factors. Our audience is individuals without a formal background in socioeconomics who are interested in better understanding how different societal metrics relate to life expectancy and broader patterns in global development and living standards. The larger context of the question lies in discussions of economic development, global inequality, and public health, where researchers and policymakers aim to understand why countries experience different health outcomes and living standards.   
 
-Predicting life expectancy is studied by Samuel Preston(1975), who proposed a Preston curve, which demonstrates a concave relationship between life expectancy and GDP per capita. Additionally, Roffia et al. conducted a longitudinal study to determine life expectancy at birth based on certain socioeconomic and demographic factors. Our report brings together multiple dimensions of national development in one accessible country-level framework, providing a holistic picture describing how multiple kinds of determinants interact and influence life expectancy.
+Prior research has examined these relationships in depth. Samuel Preston (1975) introduced the Preston curve, which demonstrates a concave relationship between life expectancy and GDP per capita. More recent work, such as Roffia et al., uses longitudinal data to study how socioeconomic and demographic factors influence life expectancy over time.
+
+Our report builds on this literature by combining multiple dimensions of national development into an accessible, country level framework. This approach provides a more holistic view of how economic, demographic, and inequality related factors interact to shape life expectancy.
 
 # 2. Source Data 
-Our data is sourced from [Gapminder](www.gapminder.org), a Swedish organization that curates reliable data on global trends, compiled from sources such as the World Bank. The data includes annual country level observations spanning multiple decades. We construct a cross sectional dataset using data from 2022, resulting in one row per country (193 observations). We use country metrics as our features that are normalized (e.g. per person) to remove population size effects. 
+Our data is sourced from [Gapminder](www.gapminder.org), a Swedish organization that curates reliable data on global trends, compiled from sources such as the World Bank. The data includes annual country level observations spanning multiple decades. We merge multiple indicator datasets by country identifiers, retain 2022 observations, and construct a cross sectional dataset after removing observations with missing GDP per capita. We use normalized country level metrics (e.g. per capita) to account for differences in population size.
 
 ```{r, include = FALSE}
 
@@ -42,7 +44,7 @@ glimpse(df_clean)
 colnames(df_clean)
 ```
 
-Each country is represented by a 3-letter country code and country long name. The outcome variable for our analysis is life expectancy (**lex**), which captures overall population health. Our primary explanatory variable is GDP per capita (**gdp_pcap**), which measures economic development. Though the online dataset includes hundreds of indicators, we have selected subset to represent broad categories of health, inequality, population demographics, economy and infrastructure:  
+Each country is represented by a three letter country code and a country name. The outcome variable in our analysis is life expectancy (**lex**), which captures overall population health. Our primary explanatory variable is GDP per capita (**gdp_pcap**), which measures economic development. Although the dataset includes hundreds of indicators, we select a subset to represent key dimensions of development, including health, inequality, population demographics, the economy, and infrastructure.:  
 
 |   |   |
 |---|---|
@@ -53,7 +55,9 @@ Each country is represented by a 3-letter country code and country long name. Th
 
 # 3. Primary Analysis
 
-Our primary analysis describes the relationship between life expectancy at birth and GDP per capita across our country data for 2022. GDP per capita is a currency-based measure and is typically well suited to a logarithmic transformation. We plot the observed life expectancy data against the observed GDP per capita data, and note that a logarithmic transformation does capture a linear relationship more effectively than the untransformed data:
+Our primary analysis examines the relationship between life expectancy at birth and GDP per capita across countries in 2022. GDP per capita is a currency based measure and is typically well suited to a logarithmic transformation.
+We plot life expectancy against GDP per capita and observe that applying a logarithmic transformation produces a more linear relationship compared to the untransformed data.:
+
 ```{r, fig.height=3, echo=FALSE, message=FALSE}
 
 #plot the observations 
@@ -80,25 +84,25 @@ plot_raw|plot_log
 cor(df_clean$lex, df_clean$gdp_pcap)
 cor(df_clean$lex, log(df_clean$gdp_pcap))
 ```
-The correlation coefficient of life expectancy against the log of GDP per capita is 0.796, supporting the clear linear relationship indicated visually in the scatter plot.  We regress life expectancy at birth on GDP per capita and following the application of OLS we specify the model as:
+The correlation between life expectancy and the logarithm of GDP per capita is 0.796, supporting the strong linear relationship observed in the scatter plot. We then estimate an Ordinary Least Squares model, regressing life expectancy at birth on GDP per capita. The model is specified as:
 $$\text{lex} = 26.501 + 4.796 \cdot \log(\text{GDP per capita})$$
 ```{r, echo = FALSE, results = FALSE}
 #define the linear regression model 
 model_short <- lm(lex ~ log(gdp_pcap), data = df_clean)
 ```
 
-The observed vs. fitted plot suggests that log-GDP-pcap model captures the general positive correlation with life expectancy, since fitted values track the observed values well. However, the residuals vs. fitted values plot shows a slight systematic curvature rather than a random scatter around zero. This demonstrates that GDP per capita does not capture the relationship completely and additional predictors are necessary to improve the model fit.
+The residuals versus fitted plot shows slight curvature rather than a random scatter around zero, indicating potential misspecification in the functional form. This suggests that GDP per capita alone does not fully capture the relationship and that additional predictors may improve model fit.
 
-We perform a t-test of the simple model coefficients using robust variance. In this model and all subsequent specifications, we report heteroskedasticity robust standard errors using the HC1 estimator:
-```{r, echo=FALSE}
+We estimate the model using heteroskedasticity robust standard errors (HC1) and report these in all subsequent specifications to account for potential heteroskedasticity.
+```{r, include=FALSE}
 coeftest(model_short, vcovHC(model_short, type = "HC1"))
 ```
 
-The p-value is below 0.001 and much smaller than our target level of significance at 0.05. As a result, we can reject our NULL hypothesis and conclude that there is strong evidence that there is a positive relationship between GDP per capita and life expectancy. A 10 percent increase in GDP per capita is associated with an approximately 0.48 year increase in life expectancy, though this reflects a cross country relationship rather than a causal effect within a given country. 
+The coefficient on log GDP per capita is positive and statistically significant (p < 0.001). A 10 percent increase in GDP per capita is associated with an approximately 0.48 year increase in life expectancy. This reflects a cross country relationship and should not be interpreted as causal within a given country.
 
 # 4. CLM Assumptions
 
-In order to visually assess the five assumptions inherent in the classical linear regression model, we generate the following plots:
+To evaluate the five assumptions of the classical linear model, we generate the following diagnostic plots:
 ```{r, echo=FALSE, results=FALSE}
 # Run Breusch-Pagan test for heteroskedasticity on model_short
 bptest(model_short)
@@ -138,22 +142,23 @@ plot1|plot2
 
 ```
 
-1. **IID**: Country observations may not be fully independent due to similarities in culture, geography, and history, but we do not observe any clear patterns in the residuals that would suggest strong dependence. 
-2. **Linear conditional expectation**: The residuals vs. fitted values plot shows a slight systematic curvature rather than a random scatter around zero, with one extreme outlier.
-3. **Perfect collineaerity**: Our primary model has a single feature and thus does not violate the perfect collinearity assumption. In our expanded model, we exclude average daily income due to its high correlation with GDP per capita, which would have introduced multicollinearity.
-4. **Homoskedasticity**: The Breusch-Pagan test yields a p-value of 0.505, which is well above a target level of 0.05. As such, we cannot reject the null hypothesis of homoskedasticity. 
-5. **Normality of errors**: The QQ plot of the standardized residuals shows that the residuals are approximately normally distributed, with points roughly following the theoretical line. There is however deviation in the tails, which may be due to the presence of outliers or the small sample size. Overall, the normality assumption appears to be reasonably satisfied.
+1. **IID**: Country observations may not be fully independent due to shared geography, culture, and historical factors. While we do not observe clear patterns in the residuals suggesting strong dependence, this assumption is unlikely to hold perfectly in a cross country setting. 
+2. **Linear conditional expectation**: The residuals vs. fitted values plot shows slight systematic curvature rather than a random scatter around zero, indicating potential functional form misspecification. This suggests that GDP per capita alone does not fully capture the relationship with life expectancy.
+3. **Perfect collineaerity**: The primary model includes a single explanatory variable and therefore satisfies the perfect collinearity assumption. In expanded models, we exclude average daily income due to its high correlation with GDP per capita to avoid multicollinearity.
+4. **Homoskedasticity**: The Breusch-Pagan test yields a p-value of 0.505, so we fail to reject the null hypothesis of constant variance. There is no strong statistical evidence of heteroskedasticity, though we continue to use robust standard errors as a precaution.
+5. **Normality of errors**: The Q-Q plot suggests that residuals are approximately normally distributed, with some deviation in the tails. This may reflect the presence of outliers or a relatively small sample size, but overall the normality assumption appears reasonably satisfied for inference.
 
 
 # 5. Expanded Analysis
 
 To better understand the relationship between life expectancy and broader measures of development, we extend
 our baseline model by incorporating additional variables capturing demographics, inequality, and population
-characteristics. Before constructing the expanded model, we note that several variables are strongly correlated with GDP per capita. In particular, average daily income is highly correlated with GDP per capita (correlation $\approx 0.96$), indicating that both variables capture similar aspects of economic development. Including both in the model would introduce multicollinearity and lead to unstable coefficient estimates. For this reason, we exclude average daily income and retain GDP per capita as our primary measure of economic development.
+characteristics. 
+Before constructing the expanded model, we note that several variables are strongly correlated with GDP per capita. In particular, average daily income is highly correlated with GDP per capita (correlation $\approx 0.96$), suggesting that both variables capture largely the same underlying economic variation. Including both variables would introduce multicollinearity and lead to unstable coefficient estimates. For this reason, we exclude average daily income and retain GDP per capita as our primary measure of economic development.
 
 ## 5.1 Demographic Factors
 
-We first extend the model by adding demographic features for fertility (children per woman) and median age. Higher fertility is associated with lower life expectancy and higher median age is associated with higher life expectancy. 
+We extend the model by adding demographic variables for fertility (children per woman) and median age. Higher fertility is associated with lower life expectancy, while higher median age is associated with higher life expectancy.
 $$
 \begin{aligned}
 \text{lex} &= 46.327 + 2.415 \cdot \log(\text{GDP per capita}) \\
@@ -181,11 +186,13 @@ plot(model_short, which = 2)
 cor(df_clean$lex, df_clean$median_age_years)
 ```
 
-We observe that the median age of the current population is highly correlated with life expectancy at birth (0.79) and it also exhibits multicollinearity with other explanatory variables. A coefficient test on this specification does show that all three coefficients are statistically significant at the 0.05 level, with robust standard errors. Including these variables improves model fit and reduces the magnitude of the GDP coefficient, suggesting that part of the relationship between income and life expectancy operates through demographic factors. An ANOVA test confirms that adding the demographic factors significantly improves model fit (F = 18.85, p < 0.0001), indicating that these factors add meaningful explanatory power for life expectancy.
+We observe that median age is highly correlated with life expectancy at birth (0.79) and also exhibits multicollinearity with other explanatory variables. A coefficient test shows that all three variables are statistically significant at the 0.05 level when using robust standard errors. 
+Including these variables improves model fit and reduces the magnitude of the GDP per capita coefficient, suggesting that part of the relationship between income and life expectancy operates through demographic factors. An ANOVA test confirms that adding the demographic variables significantly improves model fit (F = 18.85, p < 0.0001), indicating that these factors add meaningful additional explanatory power.
 
 ## 5.2 Inequality
 
-We next incorporate inequality by adding the Gini index, a measure of wealth inequality. We observe a negative and statistically significant coefficient for the Gini index, indicating that higher inequality is associated with lower life expectancy, holding other factors constant. We now omit median age since it becomes statistically insignificant in this specification (p = 0.07) and exhibits moderate multicollinearity with other explanatory variables (VIF=5.4), while the effects of GDP per capita and fertility remain statistically significant and consistent in direction.
+We next incorporate inequality by adding the Gini index, a measure of income inequality. The estimated coefficient on the Gini index is negative and statistically significant, indicating that higher inequality is associated with lower life expectancy, holding other factors constant.
+In this specification, median age becomes statistically insignificant (p = 0.07) and exhibits moderate multicollinearity with other explanatory variables (VIF = 5.4). We therefore exclude it from the final model, while the effects of GDP per capita and fertility remain statistically significant and consistent in direction.
 
 $$
 \begin{aligned}
@@ -224,7 +231,11 @@ vif(model_final)
 
 ```
 
-An ANOVA test comparing models with and without inequality shows that adding the Gini index significantly improves model fit (F = 15.15, p = 0.0001). We conclude that including inequality explains significantly more variation in life expectancy. 
+An ANOVA test comparing models with and without the inequality measure shows that adding the Gini index significantly improves model fit (F = 15.15, p = 0.0001). We conclude that inequality contributes meaningful explanatory power for life expectancy.
+
+## Conclusion
+
+Overall, economic development is strongly associated with life expectancy, but demographics and inequality provide additional explanatory power in understanding cross country differences.
 
 \newpage  
 

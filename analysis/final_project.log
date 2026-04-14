@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.6)  11 APR 2026 15:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.6)  13 APR 2026 23:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -654,31 +654,26 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 101.
 (c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-<final_project_files/figure-latex/unnamed-chunk-3-1.pdf, id=5, 469.755pt x 216.81pt>
-File: final_project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
-<use final_project_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 164.
-(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
-[1
+) [1
 
 {c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
+<final_project_files/figure-latex/unnamed-chunk-3-1.pdf, id=17, 469.755pt x 216.81pt>
+File: final_project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
+<use final_project_files/figure-latex/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 167.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 170.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 184.
-(c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [2{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./final_project_files/figure-latex/unnamed-chunk-3-1.pdf>]
-<final_project_files/figure-latex/unnamed-chunk-8-1.pdf, id=36, 469.755pt x 216.81pt>
+(Font)              <10.95> on input line 174.
+<final_project_files/figure-latex/unnamed-chunk-8-1.pdf, id=18, 469.755pt x 216.81pt>
 File: final_project_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 <use final_project_files/figure-latex/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 208.
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 197.
 (pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
-[3 <./final_project_files/figure-latex/unnamed-chunk-8-1.pdf>] [4]
+[2{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./final_project_files/figure-latex/unnamed-chunk-3-1.pdf>] [3 <./final_project_files/figure-latex/unnamed-chunk-8-1.pdf>] [4]
 <final_project_files/figure-latex/unnamed-chunk-13-1.pdf, id=67, 469.755pt x 201.75375pt>
 File: final_project_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
 <use final_project_files/figure-latex/unnamed-chunk-13-1.pdf>
-Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-13-1.pdf  used on input line 352.
+Package pdftex.def Info: final_project_files/figure-latex/unnamed-chunk-13-1.pdf  used on input line 349.
 (pdftex.def)             Requested size: 469.75386pt x 201.75325pt.
 [5 <./final_project_files/figure-latex/unnamed-chunk-13-1.pdf>] (./final_project.aux)
  ***********
@@ -687,18 +682,18 @@ L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17276 strings out of 469339
- 345297 string characters out of 5464868
+ 17233 strings out of 469339
+ 344527 string characters out of 5464868
  744641 words of memory out of 5000000
- 45877 multiletter control sequences out of 15000+600000
- 672462 words of font info for 74 fonts, out of 8000000 for 9000
+ 45837 multiletter control sequences out of 15000+600000
+ 672143 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,9n,93p,412b,1031s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on final_project.pdf (5 pages, 276672 bytes).
+ 89i,9n,93p,412b,1131s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/vlad7/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb>
+Output written on final_project.pdf (5 pages, 249468 bytes).
 PDF statistics:
- 164 PDF objects out of 1000 (max. 8388607)
- 132 compressed objects within 2 object streams
- 22 named destinations out of 1000 (max. 500000)
- 96 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 163 PDF objects out of 1000 (max. 8388607)
+ 133 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
+ 104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
