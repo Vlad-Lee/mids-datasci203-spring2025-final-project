@@ -236,7 +236,7 @@ vif(model_final)
 
 ```
 
-An ANOVA test comparing models with and without the inequality measure shows that adding the Gini index significantly improves model fit (F = 15.15, p = 0.0001). We conclude that inequality contributes meaningful explanatory power for life expectancy.
+An ANOVA test comparing models with and without the inequality measure shows that adding the Gini index significantly improves model fit (F = 15.15, p = 0.0001). We conclude that inequality contributes meaningful explanatory power for life expectancy. Table 1 in Appendix summarizes the three regression models of life expectancy.
 
 ## Conclusion
 
