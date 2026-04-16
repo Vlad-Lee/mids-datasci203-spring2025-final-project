@@ -1,12 +1,16 @@
 ---
-title: 'Final Project: Description Using Models'
-subtitle: 'UCB MIDS 203 Fall 2026 Section 6 Final Project Report'
-author: 'Vlad Lee, Sophia Liang, Mark Randall'
-output: 'pdf_document'  
-classoption: portait
+title: 'Final Project: Drivers of Life Expectancy Across Countries'
+author: "Vlad Lee, Sophia Liang, Mark Randall"
+subtitle: UCB MIDS 203 Fall 2026 Section 6 Final Project Report
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 fontsize: 11pt
 header-includes:
-   - \usepackage{placeins}
+  - \usepackage{placeins}
+  - \usepackage{caption}
+  - \captionsetup[table]{labelformat=empty,labelsep=none}
 ---
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 # Import the libraries necessary for our project
@@ -66,17 +70,17 @@ plot_raw <- df_clean %>%
   ggplot(aes(x=gdp_pcap, y=lex)) + geom_point() +
   scale_x_continuous(labels = label_comma(accuracy = 1)) +
   labs (
-        title = 'Observed life expectancy at birth vs. gdp per capita in 2022',
-        x = 'GDP per capita',
-        y = 'life expectancy at birth'
+        title = 'Observed Life Expectancy at Birth vs. GDP per Capita in 2022',
+        x = 'GDP per Capita',
+        y = 'Life Expectancy at Birth'
     )
 
 plot_log <- df_clean %>%
     ggplot(aes(x=log(gdp_pcap), y=lex)) + geom_point() + 
     geom_smooth(method=lm) + 
     labs (
-        x = 'GDP per capita (logarithmic scale)',
-        y = 'life expectancy at birth'
+        x = 'GDP per Capita (logarithmic scale)',
+        y = 'Life Expectancy at Birth'
     )
 plot_raw|plot_log 
 
@@ -252,7 +256,7 @@ Our question examines the relationship between GDP per capita and life expectanc
 
 We constructed our model in a step-wise fashion, starting with demographic factors (fertility and median age), and then proceeding to add the gini coefficient to capture inequality. Finally, we removed the median age variable since it becomes statistically insignificant in the presence of the gini coefficient, and exhibits multicollinearity with other explanatory variables. The remaining variables are not statistically significant and are excluded from the final model to avoid overfitting.
 
-The final residuals vs fitted values plot shows slight parabolic curvature rather than a straight line, implying the addition of an x^2 term may improve model fit. However, we find that adding a squared term for fertility does not significantly improve model fit. The curvature may rather be driven by outliers, but we do not have a strong theoretical reason to exclude them from our analysis.  
+The final residuals vs fitted values plot shows slight parabolic curvature rather than a straight line, implying the addition of an x^2 term may improve model fit. However, we find that adding a squared term for fertility does not significantly improve model fit. The curvature may rather be driven by outliers, but we do not have a strong theoretical reason to exclude them from our analysis.
 
 ```{r, fig.height=2.8, echo=FALSE, message=FALSE}
 
@@ -287,8 +291,8 @@ plot1|plot2
 
 ```
 
-
-```{r, echo = FALSE, message = FALSE, results=FALSE}
+\setcounter{table}{0}
+```{r, echo = FALSE, message = FALSE}
 modelsummary(
   list(
     "Baseline" = model_short,
@@ -297,9 +301,9 @@ modelsummary(
   ),
   vcov = "HC1",
   stars = TRUE,
-  title = "Regression Models of Life Expectancy",
+  title = 'Summary of Regression Models of Life Expectancy',
   statistic = "({std.error})",
-  gof_omit = "AIC|BIC|Log.Lik|RMSE|F",
+  gof_omit = "AIC|BIC|Log.Lik|RMSE|Std.Errors",
   coef_map = c(
     "(Intercept)" = "Intercept",
     "gdp_pcap" = "GDP per Capita",
@@ -307,6 +311,8 @@ modelsummary(
     "children_per_woman_total_fertility" = "Children per Woman",
     "median_age_years" = "Median Age",
     "gini" = "Gini Index"
-  )
+  ),
+  notes = "Robust standard errors (HC1) in parentheses."
 )
 ```
+
